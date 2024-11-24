@@ -1,11 +1,15 @@
 package ru.ivakhramov.java.basic.http.server;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.IOException;
 import java.net.Socket;
 
 public class RequestHandler implements Runnable {
     private final Socket socket;
     private Dispatcher dispatcher;
+    private static final Logger logger = LogManager.getLogger(HttpServer.class);
 
     public RequestHandler(Socket socket, Dispatcher dispatcher) {
         this.socket = socket;
@@ -22,7 +26,7 @@ public class RequestHandler implements Runnable {
             request.info(true);
             dispatcher.execute(request, socket.getOutputStream());
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("Ошибка: " + e.getStackTrace());
         }
     }
 }
