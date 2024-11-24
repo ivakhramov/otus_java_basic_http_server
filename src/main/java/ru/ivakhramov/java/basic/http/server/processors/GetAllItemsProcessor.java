@@ -1,7 +1,10 @@
 package ru.ivakhramov.java.basic.http.server.processors;
 
 import com.google.gson.Gson;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import ru.ivakhramov.java.basic.http.server.HttpRequest;
+import ru.ivakhramov.java.basic.http.server.HttpServer;
 import ru.ivakhramov.java.basic.http.server.app.Item;
 import ru.ivakhramov.java.basic.http.server.app.ItemsRepository;
 
@@ -12,6 +15,7 @@ import java.util.List;
 
 public class GetAllItemsProcessor implements RequestProcessor {
     private ItemsRepository itemsRepository;
+    private static final Logger logger = LogManager.getLogger(HttpServer.class);
 
     public GetAllItemsProcessor(ItemsRepository itemsRepository) {
         this.itemsRepository = itemsRepository;
@@ -28,6 +32,7 @@ public class GetAllItemsProcessor implements RequestProcessor {
                 "Content-Type: application/json\r\n" +
                 "\r\n" +
                 itemsJson;
+        logger.info(response);
         output.write(response.getBytes(StandardCharsets.UTF_8));
     }
 }
