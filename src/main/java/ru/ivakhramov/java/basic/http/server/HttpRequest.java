@@ -9,6 +9,7 @@ public class HttpRequest {
     private HttpMethod method;
     private String uri;
     private Map<String, String> parameters;
+    private String body;
     private Exception exception;
 
     public Exception getException() {
@@ -21,6 +22,14 @@ public class HttpRequest {
 
     public String getUri() {
         return uri;
+    }
+
+    public String getRoutingKey() {
+        return method + " " + uri;
+    }
+
+    public String getBody() {
+        return body;
     }
 
     public HttpRequest(String rawRequest) {
@@ -51,6 +60,9 @@ public class HttpRequest {
                 parameters.put(keyValue[0], keyValue[1]);
             }
         }
+        if (method == HttpMethod.POST) {
+            this.body = rawRequest.substring(rawRequest.indexOf("\r\n\r\n") + 4);
+        }
     }
 
     public void info(boolean debug) {
@@ -60,5 +72,6 @@ public class HttpRequest {
         System.out.println("Method: " + method);
         System.out.println("URI: " + uri);
         System.out.println("Parameters: " + parameters);
+        System.out.println("Body: " + body);
     }
 }
